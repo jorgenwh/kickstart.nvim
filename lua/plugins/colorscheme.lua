@@ -6,3 +6,9 @@ return {
     vim.cmd.hi 'Comment gui=none'
   end,
 }
+
+-- return {
+--     "scottmckendry/cyberdream.nvim",
+--     lazy = false,
+--     priority = 1000,
+-- }

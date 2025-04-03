@@ -56,6 +56,9 @@ return { -- LSP Configuration & Plugins
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
+        -- Show diagnostics in a floating window
+        map('gl', vim.diagnostic.open_float, 'Show [L]ine Diagnostics')
+
         -- Jump to the definition of the word under your cursor.
         --  This is where a variable was first declared, or where a function is defined, etc.
         --  To jump back, press <C-t>.
@@ -138,6 +141,21 @@ return { -- LSP Configuration & Plugins
       end,
     })
 
+    vim.diagnostic.config({
+      underline = true,         -- Keep the underlines (you already see this)
+      virtual_text = false,      -- Set to true to show diagnostics inline at end of line (can be noisy)
+                                -- Or configure selectively:
+                                -- virtual_text = { severity = vim.diagnostic.severity.ERROR }, -- Only show errors as virtual text
+      signs = true,             -- Show icons in the sign column (gutter)
+      update_in_insert = false, -- Don't update diagnostics while typing in insert mode (prevents flicker)
+      severity_sort = true,     -- Sort diagnostics by severity in lists
+      float = {                 -- Configure the look of the diagnostic float window (used by 'gl')
+          source = "always",      -- Show the source of the diagnostic (e.g., "pyright")
+          border = "rounded",     -- Use rounded borders for the float
+          focusable = false,      -- Make the float window not focusable by default
+      },
+    })
+
     -- LSP servers and clients are able to communicate to each other what features they support.
     --  By default, Neovim doesn't support everything that is in the LSP specification.
     --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -215,11 +233,19 @@ return { -- LSP Configuration & Plugins
 
     local lspconfig = require 'lspconfig'
 
-    -- Disable diagnostics and warnings for clangd
-    lspconfig.clangd.setup {
-      handlers = {
-        ['textDocument/publishDiagnostics'] = function() end,
-      },
+    require('lspconfig')['clangd'].setup{
+        cmd={"clangd",
+            "--query-driver=**/aarch64-appear-linux-g++",
+            "--clang-tidy",
+        },
+        autostart = true,
     }
+
+    -- Disable diagnostics and warnings for clangd
+    -- lspconfig.clangd.setup {
+    --   handlers = {
+    --     ['textDocument/publishDiagnostics'] = function() end,
+    --   },
+    -- }
   end,
 }
