@@ -10,7 +10,7 @@ return {
   },
   keys = {
     { "<leader>df", "<cmd>DiffviewOpen<cr>", desc = "Open diffview" },
-    -- { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
+    { "<leader>dfh", "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
   },
   config = function()
     local actions = require("diffview.actions")
