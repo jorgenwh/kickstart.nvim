@@ -226,19 +226,19 @@ return { -- LSP Configuration & Plugins
           -- by the server configuration above. Useful when disabling
           -- certain features of an LSP (for example, turning off formatting for tsserver)
           server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
+
+          -- Special handling for clangd
+          if server_name == 'clangd' then
+            server.cmd = {
+              "clangd",
+              "--query-driver=**/aarch64-appear-linux-g++",
+              "--clang-tidy",
+            }
+          end
+
+          vim.lsp.config(server_name, server)
         end,
       },
-    }
-
-    local lspconfig = require 'lspconfig'
-
-    require('lspconfig')['clangd'].setup{
-        cmd={"clangd",
-            "--query-driver=**/aarch64-appear-linux-g++",
-            "--clang-tidy",
-        },
-        autostart = true,
     }
 
     -- Disable diagnostics and warnings for clangd
