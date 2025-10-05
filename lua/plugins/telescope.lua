@@ -1,3 +1,4 @@
+-- COMMENTED OUT: Replaced with fzf-lua for better performance
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   event = 'VimEnter',
@@ -23,31 +24,27 @@ return { -- Fuzzy Finder (files, lsp, etc)
     { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
   },
   config = function()
-    -- Telescope is a fuzzy finder that comes with a lot of different things that
-    -- it can fuzzy find! It's more than just a "file finder", it can search
-    -- many different aspects of Neovim, your workspace, LSP, and more!
-    --
-    -- The easiest way to use Telescope, is to start by doing something like:
-    --  :Telescope help_tags
-    --
-    -- After running this command, a window will open up and you're able to
-    -- type in the prompt window. You'll see a list of `help_tags` options and
-    -- a corresponding preview of the help.
-    --
-    -- Two important keymaps to use while in Telescope are:
-    --  - Insert mode: <c-/>
-    --  - Normal mode: ?
-    --
-    -- This opens a window that shows you all of the keymaps for the current
-    -- Telescope picker. This is really useful to discover what Telescope can
-    -- do as well as how to actually do it!
+    -- Set Telescope colors to match your black background with subtle borders
+    local cream = '#999999'  -- Darker gray border
+
+    vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = '#000000', fg = '#e6e6e6' })
+    vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = '#000000', fg = cream })
+    vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = '#000000', fg = '#e6e6e6' })
+    vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = '#000000', fg = cream })
+    vim.api.nvim_set_hl(0, 'TelescopePromptTitle', { bg = '#000000', fg = '#FFD700' })
+    vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = '#000000', fg = '#e6e6e6' })
+    vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', { bg = '#000000', fg = cream })
+    vim.api.nvim_set_hl(0, 'TelescopePreviewTitle', { bg = '#000000', fg = '#FFD700' })
+    vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = '#000000', fg = '#e6e6e6' })
+    vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', { bg = '#000000', fg = cream })
+    vim.api.nvim_set_hl(0, 'TelescopeResultsTitle', { bg = '#000000', fg = '#FFD700' })
 
     -- [[ Configure Telescope ]]
     -- See `:help telescope` and `:help telescope.setup()`
     require('telescope').setup {
       -- You can put your default mappings / updates / etc. in here
-      --  All the info you're looking for is in `:help telescope.setup()`
-      --
+      -- All the info you're looking for is in `:help telescope.setup()`
+
       defaults = {
         mappings = {
           -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
@@ -107,5 +104,55 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>sn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config', initial_mode = 'normal' }
     end, { desc = '[S]earch [N]eovim files' })
+
+    -- Grep with exclusions (prompts for file extensions to exclude, comma-separated)
+    vim.keymap.set('n', '<leader>se', function()
+      local exclude = vim.fn.input('Exclude file extensions (e.g., txt,log,tsx): ')
+      if exclude ~= '' then
+        local extensions = vim.split(exclude, ',')
+        local args = {}
+        for _, ext in ipairs(extensions) do
+          ext = vim.trim(ext)
+          -- Add *. prefix if not already present
+          if not ext:match('^%*%.') and not ext:match('^%*') then
+            ext = '*.' .. ext
+          end
+          table.insert(args, "--glob")
+          table.insert(args, "!" .. ext)
+        end
+        builtin.live_grep {
+          additional_args = function()
+            return args
+          end,
+        }
+      else
+        builtin.live_grep()
+      end
+    end, { desc = '[S]earch with [E]xclusions' })
+
+    -- Grep with inclusions (prompts for file extensions to ONLY search, comma-separated)
+    vim.keymap.set('n', '<leader>si', function()
+      local include = vim.fn.input('Search ONLY in file extensions (e.g., lua,py,js): ')
+      if include ~= '' then
+        local extensions = vim.split(include, ',')
+        local args = {}
+        for _, ext in ipairs(extensions) do
+          ext = vim.trim(ext)
+          -- Add *. prefix if not already present
+          if not ext:match('^%*%.') and not ext:match('^%*') then
+            ext = '*.' .. ext
+          end
+          table.insert(args, "--glob")
+          table.insert(args, ext)
+        end
+        builtin.live_grep {
+          additional_args = function()
+            return args
+          end,
+        }
+      else
+        builtin.live_grep()
+      end
+    end, { desc = '[S]earch with [I]nclusions' })
   end,
 }
