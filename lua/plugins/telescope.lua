@@ -70,7 +70,64 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
     vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
     vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-    vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+
+    -- Custom live_grep with inline filtering: search | !ext1,ext2
+    vim.keymap.set('n', '<leader>sg', function()
+      local pickers = require('telescope.pickers')
+      local finders = require('telescope.finders')
+      local make_entry = require('telescope.make_entry')
+      local conf = require('telescope.config').values
+
+      pickers.new({}, {
+        -- prompt_title = 'Live Grep (use | for filters: search | !exclude,include)',
+        finder = finders.new_job(function(prompt)
+          if not prompt or prompt == "" then
+            return nil
+          end
+
+          -- Parse prompt: "search term | !ext1,ext2,ext3"
+          local search_term = prompt
+          local args = { 'rg', '--color=never', '--no-heading', '--with-filename',
+                         '--line-number', '--column', '--smart-case' }
+
+          local pipe_pos = prompt:find('|', 1, true)
+          if pipe_pos then
+            search_term = vim.trim(prompt:sub(1, pipe_pos - 1))
+            local filters = vim.trim(prompt:sub(pipe_pos + 1))
+
+            -- Parse filters: !ext for exclusion, ext for inclusion
+            for filter in filters:gmatch('[^,]+') do
+              filter = vim.trim(filter)
+              if filter ~= "" then
+                local is_exclusion = filter:match('^!')
+                local ext = is_exclusion and filter:sub(2) or filter
+
+                -- Add *. prefix if not present
+                if not ext:match('^%*%.') and not ext:match('^%*') then
+                  ext = '*.' .. ext
+                end
+
+                table.insert(args, '--glob')
+                table.insert(args, is_exclusion and ('!' .. ext) or ext)
+              end
+            end
+          end
+
+          if search_term == "" then
+            return nil
+          end
+
+          -- Add search term
+          table.insert(args, '-e')
+          table.insert(args, search_term)
+
+          return args
+        end, make_entry.gen_from_vimgrep({}), nil, nil),
+        previewer = conf.grep_previewer({}),
+        sorter = conf.generic_sorter({}),
+      }):find()
+    end, { desc = '[S]earch by [G]rep' })
+
     vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
     vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
 
@@ -104,55 +161,5 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>sn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config', initial_mode = 'normal' }
     end, { desc = '[S]earch [N]eovim files' })
-
-    -- Grep with exclusions (prompts for file extensions to exclude, comma-separated)
-    vim.keymap.set('n', '<leader>se', function()
-      local exclude = vim.fn.input('Exclude file extensions: ')
-      if exclude ~= '' then
-        local extensions = vim.split(exclude, ',')
-        local args = {}
-        for _, ext in ipairs(extensions) do
-          ext = vim.trim(ext)
-          -- Add *. prefix if not already present
-          if not ext:match('^%*%.') and not ext:match('^%*') then
-            ext = '*.' .. ext
-          end
-          table.insert(args, "--glob")
-          table.insert(args, "!" .. ext)
-        end
-        builtin.live_grep {
-          additional_args = function()
-            return args
-          end,
-        }
-      else
-        builtin.live_grep()
-      end
-    end, { desc = '[S]earch with [E]xclusions' })
-
-    -- Grep with inclusions (prompts for file extensions to ONLY search, comma-separated)
-    vim.keymap.set('n', '<leader>si', function()
-      local include = vim.fn.input('Search in file extensions: ')
-      if include ~= '' then
-        local extensions = vim.split(include, ',')
-        local args = {}
-        for _, ext in ipairs(extensions) do
-          ext = vim.trim(ext)
-          -- Add *. prefix if not already present
-          if not ext:match('^%*%.') and not ext:match('^%*') then
-            ext = '*.' .. ext
-          end
-          table.insert(args, "--glob")
-          table.insert(args, ext)
-        end
-        builtin.live_grep {
-          additional_args = function()
-            return args
-          end,
-        }
-      else
-        builtin.live_grep()
-      end
-    end, { desc = '[S]earch with [I]nclusions' })
   end,
 }
