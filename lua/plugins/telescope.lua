@@ -107,7 +107,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
     -- Grep with exclusions (prompts for file extensions to exclude, comma-separated)
     vim.keymap.set('n', '<leader>se', function()
-      local exclude = vim.fn.input('Exclude file extensions (e.g., txt,log,tsx): ')
+      local exclude = vim.fn.input('Exclude file extensions: ')
       if exclude ~= '' then
         local extensions = vim.split(exclude, ',')
         local args = {}
@@ -132,7 +132,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
     -- Grep with inclusions (prompts for file extensions to ONLY search, comma-separated)
     vim.keymap.set('n', '<leader>si', function()
-      local include = vim.fn.input('Search ONLY in file extensions (e.g., lua,py,js): ')
+      local include = vim.fn.input('Search in file extensions: ')
       if include ~= '' then
         local extensions = vim.split(include, ',')
         local args = {}
