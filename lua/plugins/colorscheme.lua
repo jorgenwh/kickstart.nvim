@@ -20,17 +20,14 @@ return {
             NeoTreeNormalNC    = { bg = "#000000", fg = "#e6e6e6" },
             NeoTreeEndOfBuffer = { bg = "#000000", fg = "#000000" },
             NeoTreeWinSeparator = { bg = "#000000", fg = "#000000" },
-
-            ["@function"] = { fg = "#FFD700" },
-            ["@function.call"] = { fg = "#FFD700" },
-            ["@function.builtin"] = { fg = "#FFD700" }, -- e.g. std::move
-            ["@method"] = { fg = "#FFD700" },           -- class methods
-            ["@method.call"] = { fg = "#FFD700" },      -- method calls
           }
         end,
     })
 
     vim.cmd.colorscheme 'catppuccin-mocha'
     vim.cmd.hi 'Comment gui=none'
+
+    -- Apply custom syntax highlights
+    require('custom_highlights').apply()
   end,
 }

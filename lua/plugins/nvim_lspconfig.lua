@@ -47,10 +47,9 @@ return { -- LSP Configuration & Plugins
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
       callback = function(event)
-        -- LSP semantic tokens override treesitter, so we need to set these here
-        vim.api.nvim_set_hl(0, "@lsp.type.function", { fg = "#FFD700" })
-        vim.api.nvim_set_hl(0, "@lsp.type.method", { fg = "#FFD700" })
-        vim.api.nvim_set_hl(0, "@lsp.mod.declaration", {}) -- Clear any modifiers that might override
+        -- Apply custom syntax highlights when LSP attaches
+        -- LSP semantic tokens override treesitter, so we reapply highlights here
+        require('custom_highlights').apply()
         -- NOTE: Remember that Lua is a real programming language, and as such it is possible
         -- to define small helper and utility functions so you don't have to repeat yourself.
         --
