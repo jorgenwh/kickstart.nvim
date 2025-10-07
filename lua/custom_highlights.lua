@@ -3,19 +3,25 @@
 --
 -- HOW TO USE:
 -- 1. Edit M.colors table below to change colors
--- 2. Reload Neovim - changes apply automatically
--- 3. No need to edit multiple files - everything is here!
+-- 2. Set M.enabled to false to disable custom highlights
+-- 3. Reload Neovim - changes apply automatically
+-- 4. No need to edit multiple files - everything is here!
 
 local M = {}
+
+-- ============================================================================
+-- ENABLE/DISABLE CUSTOM HIGHLIGHTS
+-- ============================================================================
+M.enabled = true -- Set to false to disable all custom syntax highlighting
 
 -- ============================================================================
 -- COLOR DEFINITIONS - Edit these to change syntax highlighting colors
 -- ============================================================================
 M.colors = {
-  functions = "#49e334",  -- red
+  functions = "#58de00",  -- green
   variables = "#e6e6e6",  -- white
-  types = "#389fff",      -- blue
-  keywords = "#f25555",   -- green
+  types = "#74a8ff",      -- blue
+  keywords = "#f25555",   -- red
   namespaces = "#f0de78", -- yellow
   parameters = "#e6e6e6", -- white
   enums = "#e6e6e6",      -- white
@@ -25,7 +31,12 @@ M.colors = {
 -- HIGHLIGHT APPLICATION - Applied automatically, don't edit unless adding new groups
 -- ============================================================================
 function M.apply()
-  -- FUNCTIONS AND METHODS (red)
+  -- Early exit if custom highlights are disabled
+  if not M.enabled then
+    return
+  end
+
+  -- FUNCTIONS AND METHODS (green)
   -- Affects: function definitions, function calls, method calls, built-in functions, constructors
   -- Examples: myFunc(), obj.method(), std::move(), printf(), MyClass(), new MyClass()
   vim.api.nvim_set_hl(0, "@function", { fg = M.colors.functions })                -- function definitions: void myFunc() {}
