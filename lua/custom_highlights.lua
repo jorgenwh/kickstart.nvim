@@ -18,7 +18,7 @@ M.enabled = true -- Set to false to disable all custom syntax highlighting
 -- COLOR DEFINITIONS - Edit these to change syntax highlighting colors
 -- ============================================================================
 M.colors = {
-  functions = "#58de00",  -- green
+  functions = "#51df22",  -- green
   variables = "#e6e6e6",  -- white
   types = "#74a8ff",      -- blue
   keywords = "#f25555",   -- red
