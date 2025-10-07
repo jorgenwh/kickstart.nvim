@@ -25,6 +25,7 @@ return {
             ["@function.call"] = { fg = "#FFD700" },
             ["@function.builtin"] = { fg = "#FFD700" }, -- e.g. std::move
             ["@method"] = { fg = "#FFD700" },           -- class methods
+            ["@method.call"] = { fg = "#FFD700" },      -- method calls
           }
         end,
     })
