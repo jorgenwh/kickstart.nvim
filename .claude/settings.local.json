@@ -3,7 +3,9 @@
     "allow": [
       "WebFetch(domain:raw.githubusercontent.com)",
       "Read(//home/sphere/.local/share/nvim/lazy/**)",
-      "Bash(nvim:*)"
+      "Bash(nvim:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [],
     "ask": []
