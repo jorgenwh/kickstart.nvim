@@ -7,6 +7,11 @@ return {
       --   backend = "tmux",
       --   enabled = true,
       -- },
+      win = {
+        wo = {
+          winhighlight = "Normal:SidekickNormal,NormalNC:SidekickNormal"
+        }
+      }
     },
   },
   keys = {

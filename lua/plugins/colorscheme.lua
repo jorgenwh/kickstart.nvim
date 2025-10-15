@@ -20,6 +20,9 @@ return {
             NeoTreeNormalNC    = { bg = "#000000", fg = "#e6e6e6" },
             NeoTreeEndOfBuffer = { bg = "#000000", fg = "#000000" },
             NeoTreeWinSeparator = { bg = "#000000", fg = "#000000" },
+
+            -- Sidekick terminal pane
+            SidekickNormal = { bg = "#000000", fg = "#e6e6e6" },
           }
         end,
     })
