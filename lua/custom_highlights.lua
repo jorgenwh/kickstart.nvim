@@ -18,13 +18,29 @@ M.enabled = true -- Set to false to disable all custom syntax highlighting
 -- COLOR DEFINITIONS - Edit these to change syntax highlighting colors
 -- ============================================================================
 M.colors = {
-  functions = "#51df22",  -- green
-  variables = "#e6e6e6",  -- white
-  types = "#74a8ff",      -- blue
-  keywords = "#f25555",   -- red
-  namespaces = "#f0de78", -- yellow
-  parameters = "#e6e6e6", -- white
-  enums = "#e6e6e6",      -- white
+  -- Core syntax
+  functions = "#61afef",  -- blue - function/method names
+  variables = "#e6e6e6",  -- white - local vars, member vars
+  types = "#e5c07b",      -- yellow - type names, classes
+  keywords = "#c678dd",   -- purple - if, for, return, class, def
+  namespaces = "#56b6c2", -- cyan - std::, modules
+  parameters = "#d19a66", -- orange - function parameters
+  enums = "#d19a66",      -- orange - enum members, constants
+
+  -- Literals
+  strings = "#98c379",    -- green - "hello", 'world'
+  numbers = "#d19a66",    -- orange - 42, 3.14, 0xFF
+  booleans = "#d19a66",   -- orange - true, false, True, False
+
+  -- Other
+  comments = "#5c6370",   -- gray - // comment, # comment
+  operators = "#c678dd",  -- purple - +, -, *, /, =, ==
+  punctuation = "#abb2bf", -- light gray - (), {}, [], ;
+
+  -- Language-specific
+  decorators = "#e5c07b", -- yellow - @decorator (Python)
+  preprocessor = "#c678dd", -- purple - #include, #define (C++)
+  macros = "#56b6c2",     -- cyan - MACRO_NAME (C++)
 }
 
 -- ============================================================================
@@ -103,13 +119,72 @@ function M.apply()
   -- LSP semantic tokens for parameters
   vim.api.nvim_set_hl(0, "@lsp.type.parameter", { fg = M.colors.parameters })     -- LSP: function parameters
 
-  -- ENUM MEMBERS (white)
+  -- ENUM MEMBERS / CONSTANTS (orange)
   -- Affects: enum member values
   -- Examples: MyEnum::Value1, Color::RED, Status::SUCCESS
   vim.api.nvim_set_hl(0, "@constant", { fg = M.colors.enums })                    -- constants including enum members
+  vim.api.nvim_set_hl(0, "@constant.builtin", { fg = M.colors.enums })            -- None, NULL, nullptr
 
   -- LSP semantic tokens for enum members
   vim.api.nvim_set_hl(0, "@lsp.type.enumMember", { fg = M.colors.enums })         -- LSP: enum member values
+
+  -- STRINGS (green)
+  -- Affects: string literals, character literals
+  -- Examples: "hello", 'c', """docstring""", f"formatted"
+  vim.api.nvim_set_hl(0, "@string", { fg = M.colors.strings })                    -- string literals
+  vim.api.nvim_set_hl(0, "@string.escape", { fg = M.colors.strings })             -- escape sequences: \n, \t
+  vim.api.nvim_set_hl(0, "@string.special", { fg = M.colors.strings })            -- special strings
+  vim.api.nvim_set_hl(0, "@character", { fg = M.colors.strings })                 -- character literals: 'a'
+
+  -- NUMBERS (orange)
+  -- Affects: numeric literals
+  -- Examples: 42, 3.14, 0xFF, 1e-5
+  vim.api.nvim_set_hl(0, "@number", { fg = M.colors.numbers })                    -- all numbers
+  vim.api.nvim_set_hl(0, "@number.float", { fg = M.colors.numbers })              -- floats: 3.14
+  vim.api.nvim_set_hl(0, "@float", { fg = M.colors.numbers })                     -- floats (older form)
+
+  -- BOOLEANS (orange)
+  -- Affects: boolean literals
+  -- Examples: true, false, True, False
+  vim.api.nvim_set_hl(0, "@boolean", { fg = M.colors.booleans })                  -- true, false
+
+  -- COMMENTS (gray)
+  -- Affects: all comment types
+  -- Examples: // line comment, /* block */, # Python comment, /// doc comment
+  vim.api.nvim_set_hl(0, "@comment", { fg = M.colors.comments })                  -- all comments
+  vim.api.nvim_set_hl(0, "@comment.documentation", { fg = M.colors.comments })    -- doc comments
+  vim.api.nvim_set_hl(0, "Comment", { fg = M.colors.comments })                   -- base comment group
+
+  -- OPERATORS (purple)
+  -- Affects: arithmetic, logical, comparison operators
+  -- Examples: +, -, *, /, =, ==, !=, &&, ||, <<, >>
+  vim.api.nvim_set_hl(0, "@operator", { fg = M.colors.operators })                -- all operators
+
+  -- PUNCTUATION (light gray)
+  -- Affects: brackets, delimiters
+  -- Examples: (), {}, [], ;, ,, ::
+  vim.api.nvim_set_hl(0, "@punctuation", { fg = M.colors.punctuation })           -- general punctuation
+  vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = M.colors.punctuation })   -- (), {}, []
+  vim.api.nvim_set_hl(0, "@punctuation.delimiter", { fg = M.colors.punctuation }) -- ;, ,
+  vim.api.nvim_set_hl(0, "@punctuation.special", { fg = M.colors.punctuation })   -- special punctuation
+
+  -- PYTHON-SPECIFIC
+  -- Decorators: @property, @staticmethod, @my_decorator
+  vim.api.nvim_set_hl(0, "@attribute", { fg = M.colors.decorators })              -- decorators
+  vim.api.nvim_set_hl(0, "@attribute.python", { fg = M.colors.decorators })       -- Python decorators
+  vim.api.nvim_set_hl(0, "@function.decorator", { fg = M.colors.decorators })     -- decorator functions
+
+  -- C/C++-SPECIFIC
+  -- Preprocessor: #include, #define, #ifdef
+  vim.api.nvim_set_hl(0, "@keyword.directive", { fg = M.colors.preprocessor })    -- preprocessor directives
+  vim.api.nvim_set_hl(0, "@preproc", { fg = M.colors.preprocessor })              -- preprocessor (older form)
+  vim.api.nvim_set_hl(0, "@define", { fg = M.colors.preprocessor })               -- #define
+  vim.api.nvim_set_hl(0, "@include", { fg = M.colors.preprocessor })              -- #include
+
+  -- Macros: MY_MACRO, SOME_CONSTANT
+  vim.api.nvim_set_hl(0, "@constant.macro", { fg = M.colors.macros })             -- macro constants
+  vim.api.nvim_set_hl(0, "@function.macro", { fg = M.colors.macros })             -- macro functions
+  vim.api.nvim_set_hl(0, "@lsp.type.macro", { fg = M.colors.macros })             -- LSP: macros
 
   -- Clear any LSP modifiers that might override our colors
   vim.api.nvim_set_hl(0, "@lsp.mod.declaration", {})
