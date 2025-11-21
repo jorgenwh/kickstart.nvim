@@ -18,28 +18,28 @@ M.enabled = true -- Set to false to disable all custom syntax highlighting
 -- COLOR DEFINITIONS - Edit these to change syntax highlighting colors
 -- ============================================================================
 M.colors = {
-  -- Core syntax
-  functions = "#61afef",  -- blue - function/method names
+  -- Core syntax (balanced with red accent)
+  functions = "#61afef",  -- soft blue - function/method names
   variables = "#e6e6e6",  -- white - local vars, member vars
-  types = "#e5c07b",      -- yellow - type names, classes
-  keywords = "#c678dd",   -- purple - if, for, return, class, def
+  types = "#e5c07b",      -- gold - type names, classes
+  keywords = "#e06c75",   -- soft red - if, for, return, class, def
   namespaces = "#56b6c2", -- cyan - std::, modules
   parameters = "#d19a66", -- orange - function parameters
   enums = "#d19a66",      -- orange - enum members, constants
 
   -- Literals
-  strings = "#98c379",    -- green - "hello", 'world'
+  strings = "#98c379",    -- soft green - "hello", 'world'
   numbers = "#d19a66",    -- orange - 42, 3.14, 0xFF
-  booleans = "#d19a66",   -- orange - true, false, True, False
+  booleans = "#e06c75",   -- soft red - true, false, True, False
 
   -- Other
   comments = "#5c6370",   -- gray - // comment, # comment
-  operators = "#c678dd",  -- purple - +, -, *, /, =, ==
+  operators = "#abb2bf",  -- light gray - +, -, *, /, =, ==
   punctuation = "#abb2bf", -- light gray - (), {}, [], ;
 
   -- Language-specific
-  decorators = "#e5c07b", -- yellow - @decorator (Python)
-  preprocessor = "#c678dd", -- purple - #include, #define (C++)
+  decorators = "#e5c07b", -- gold - @decorator (Python)
+  preprocessor = "#e06c75", -- soft red - #include, #define (C++)
   macros = "#56b6c2",     -- cyan - MACRO_NAME (C++)
 }
 
