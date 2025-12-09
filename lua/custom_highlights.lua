@@ -20,7 +20,8 @@ M.enabled = true -- Set to false to disable all custom syntax highlighting
 M.colors = {
   -- Core syntax (balanced with red accent)
   functions = "#61afef",  -- soft blue - function/method names
-  variables = "#e6e6e6",  -- white - local vars, member vars
+  variables = "#e6e6e6",  -- white - local vars, object properties
+  member_variables = "#f0e6c8", -- white with slight yellow tint - member vars (m_foo)
   types = "#e5c07b",      -- gold - type names, classes
   keywords = "#e06c75",   -- soft red - if, for, return, class, def
   namespaces = "#56b6c2", -- cyan - std::, modules
@@ -69,15 +70,19 @@ function M.apply()
   vim.api.nvim_set_hl(0, "@lsp.type.member", { fg = M.colors.functions })         -- LSP: member functions
 
   -- VARIABLES (white)
-  -- Affects: local variables, member variables (m_foo), object properties (obj.field)
-  -- Examples: int x = 5; m_count; obj.seamlessStatus; myInstance.relativeDelay
+  -- Affects: local variables, object properties (obj.field)
+  -- Examples: int x = 5; myLocalVar; obj.seamlessStatus; myInstance.relativeDelay
   vim.api.nvim_set_hl(0, "@variable", { fg = M.colors.variables })                -- all variables: int x; when using x later
-  vim.api.nvim_set_hl(0, "@variable.member", { fg = M.colors.variables })         -- member variables: m_essenceTransportStatus, m_count
   vim.api.nvim_set_hl(0, "@property", { fg = M.colors.variables })                -- object properties: obj.relativeDelay, ptr->seamlessStatus
 
   -- LSP semantic tokens for variables (override treesitter when LSP is active)
-  vim.api.nvim_set_hl(0, "@lsp.type.property", { fg = M.colors.variables })       -- LSP: object properties
   vim.api.nvim_set_hl(0, "@lsp.type.variable", { fg = M.colors.variables })       -- LSP: all variables
+  vim.api.nvim_set_hl(0, "@lsp.type.property", { fg = M.colors.variables })       -- LSP: object properties
+
+  -- MEMBER VARIABLES (white with yellow tint)
+  -- Affects: member variables (m_foo)
+  -- Examples: m_count; m_essenceTransportStatus
+  vim.api.nvim_set_hl(0, "@variable.member", { fg = M.colors.member_variables })  -- member variables: m_essenceTransportStatus, m_count
 
   -- TYPES (red)
   -- Affects: type names (int, auto, MyClass, int32_t, std::string)
