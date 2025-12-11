@@ -33,7 +33,7 @@ return { -- Highlight, edit, and navigate code
     local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
     parser_config.idcl = {
       install_info = {
-        url = '~/src/tree-sitter-idcl', -- Path to the tree-sitter-idcl repo
+        url = '~/src/appear/tree-sitter-idcl', -- Path to the tree-sitter-idcl repo
         files = { 'src/parser.c' },
         -- optional entries:
         branch = 'master', -- default branch in case of git repo if different from master
