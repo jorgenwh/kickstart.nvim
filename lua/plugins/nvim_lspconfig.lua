@@ -13,6 +13,9 @@ return { -- LSP Configuration & Plugins
     -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
     { 'folke/neodev.nvim', opts = {} },
+
+    -- JSON schemas catalog for jsonls
+    'b0o/schemastore.nvim',
   },
   config = function()
     -- Brief aside: **What is LSP?**
@@ -188,6 +191,15 @@ return { -- LSP Configuration & Plugins
       --
       -- But for many setups, the LSP (`ts_ls`) will work just fine
       ts_ls = {},
+
+      jsonls = {
+        settings = {
+          json = {
+            schemas = require('schemastore').json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      },
 
       lua_ls = {
         -- cmd = {...},
