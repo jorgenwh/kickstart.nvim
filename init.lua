@@ -1,3 +1,8 @@
+-- Add luarocks paths for image.nvim magick dependency
+package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?/init.lua'
+package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?.lua'
+package.cpath = package.cpath .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/lib/lua/5.1/?.so'
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
