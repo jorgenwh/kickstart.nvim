@@ -27,17 +27,17 @@ return { -- Fuzzy Finder (files, lsp, etc)
     -- Set Telescope colors to match your black background with subtle borders
     local cream = '#999999'  -- Darker gray border
 
-    vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = '#000000', fg = '#e6e6e6' })
-    vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = '#000000', fg = cream })
-    vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = '#000000', fg = '#e6e6e6' })
-    vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = '#000000', fg = cream })
-    vim.api.nvim_set_hl(0, 'TelescopePromptTitle', { bg = '#000000', fg = '#FFD700' })
-    vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = '#000000', fg = '#e6e6e6' })
-    vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', { bg = '#000000', fg = cream })
-    vim.api.nvim_set_hl(0, 'TelescopePreviewTitle', { bg = '#000000', fg = '#FFD700' })
-    vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = '#000000', fg = '#e6e6e6' })
-    vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', { bg = '#000000', fg = cream })
-    vim.api.nvim_set_hl(0, 'TelescopeResultsTitle', { bg = '#000000', fg = '#FFD700' })
+    vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = '#0e1415', fg = '#e6e6e6' })
+    vim.api.nvim_set_hl(0, 'TelescopeBorder', { bg = '#0e1415', fg = cream })
+    vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = '#0e1415', fg = '#e6e6e6' })
+    vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = '#0e1415', fg = cream })
+    vim.api.nvim_set_hl(0, 'TelescopePromptTitle', { bg = '#0e1415', fg = '#FFD700' })
+    vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = '#0e1415', fg = '#e6e6e6' })
+    vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', { bg = '#0e1415', fg = cream })
+    vim.api.nvim_set_hl(0, 'TelescopePreviewTitle', { bg = '#0e1415', fg = '#FFD700' })
+    vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = '#0e1415', fg = '#e6e6e6' })
+    vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', { bg = '#0e1415', fg = cream })
+    vim.api.nvim_set_hl(0, 'TelescopeResultsTitle', { bg = '#0e1415', fg = '#FFD700' })
 
     -- [[ Configure Telescope ]]
     -- See `:help telescope` and `:help telescope.setup()`

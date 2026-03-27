@@ -1,3 +1,5 @@
+return {}
+--[[ Disabled image.nvim
 return {
   '3rd/image.nvim',
   dependencies = {
@@ -27,3 +29,4 @@ return {
     },
   },
 }
+--]]

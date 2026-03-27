@@ -262,5 +262,27 @@ return { -- LSP Configuration & Plugins
     --     ['textDocument/publishDiagnostics'] = function() end,
     --   },
     -- }
+
+    -- IDCL language server (not managed by Mason)
+    vim.lsp.config('idclsp', {
+      cmd = { '/home/jhe/repos/idcls/target/release/idcls' },
+      filetypes = { 'idcl' },
+      root_markers = { '.git' },
+      init_options = {
+        includePaths = {
+          '/home/jhe/repos/framework',
+          '/home/jhe/repos/timex',
+          '/home/jhe/repos/firewall-idcl',
+          '/home/jhe/repos/sdi-idcl',
+          '/home/jhe/repos/xger',
+          '/home/jhe/repos/appear-nmos',
+          '/home/jhe/repos/atv_definitions',
+        },
+        ignoreBuildDirectories = true,
+        additionalIgnorePaths = {},
+      },
+      capabilities = capabilities,
+    })
+    vim.lsp.enable('idclsp')
   end,
 }
